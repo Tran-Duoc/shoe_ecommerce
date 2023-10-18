@@ -6,6 +6,11 @@ const productModel = new Schema(
       type: String,
       require: true
     },
+    pending: {
+      type: Boolean,
+      enum: [0, 1],
+      default: 0
+    },
     description: {
       type: String,
       default: '',
