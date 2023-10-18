@@ -7,9 +7,9 @@ const productModel = new Schema(
       require: true
     },
     pending: {
-      type: Boolean,
-      enum: [0, 1],
-      default: 0
+      type: String,
+      enum: ['pending', 'accept', 'reject'],
+      default: 'pending'
     },
     description: {
       type: String,
