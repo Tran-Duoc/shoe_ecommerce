@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import { Types } from 'mongoose'
 
 import ApiError from '~/handlers/error.handler'
-import { accept, getAllUserPublic, getPendingProducts, getProduct } from '~/services/admin.service'
+import { accept, block, exitUser, getAllUserPublic, getPendingProducts, getProduct } from '~/services/admin.service'
 
 export const getUsersPublic = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -48,6 +48,21 @@ export const acceptPendingProduct = async (req: Request, res: Response, next: Ne
     const product = await getProduct(ProductId as unknown as Types.ObjectId)
     if (!product) throw new ApiError(StatusCodes.NOT_FOUND, "Product does't exit")
     await accept(ProductId as unknown as Types.ObjectId, 'accept')
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const blockUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id: userIdBlock } = req.params
+    const isUser = await exitUser({ _id: userIdBlock })
+    if (!isUser) throw new ApiError(StatusCodes.NOT_FOUND, "User does't exit")
+    await block(userIdBlock as unknown as Types.ObjectId)
+    return res.status(StatusCodes.CREATED).json({
+      success: true,
+      message: 'Block user successfully'
+    })
   } catch (error) {
     next(error)
   }

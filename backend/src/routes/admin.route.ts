@@ -16,6 +16,6 @@ router.get('/checking_pending', verifyAccessToken, getPendingProduct)
 router.post('/accept_pending_product/:id', verifyAccessToken)
 
 //4. block user
-router.post('/block_user/:id')
+router.post('/block_user/:id', verifyAccessToken)
 
 export default router
